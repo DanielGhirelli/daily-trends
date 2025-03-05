@@ -87,7 +87,7 @@ npm run test
 ### **2. Formateo del Código**
 Asegúrate de que el código siga el formato correcto con:
 ```
-npm run lint npm run prettier
+npm run lint
 ```
 
 ## Arquitectura
