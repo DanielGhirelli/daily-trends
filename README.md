@@ -97,5 +97,6 @@ Daily Trends está estructurado en diferentes capas para garantizar la separaci�
 
 - **Client**: Postman, navegador o cualquier consumidor de API que envíe solicitudes HTTP.
 - **Backend Services**: Los controladores de Express manejan las solicitudes y respuestas.
+- **Middleware**: Capa intermedia que gestiona la validación, y manejo de errores antes de llegar a los servicios.
 - **Scraping Layer**: Responsable de ejecutar procesos de scraping concurrentes para extraer datos.
 - **Database**: Utiliza MongoDB (a través de Mongoose) para la persistencia.
