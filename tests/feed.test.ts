@@ -42,6 +42,28 @@ describe('Feed API Endpoints', () => {
     createdFeed = res.body; // Store created feed for update and delete tests
   });
 
+  it('POST /feeds - should fail with missing fields', async () => {
+    const res = await request(app).post('/feeds').send({
+      title: 'Test Feed Title',
+    });
+
+    expect(res.status).toBe(400);
+    expect(res.body.errors).toBeDefined();
+    expect(res.body.errors[0].msg).toBe('URL is required');
+  });
+
+  it('POST /feeds - should fail with invalid URL', async () => {
+    const res = await request(app).post('/feeds').send({
+      title: 'Test Feed Title',
+      url: 'invalid-url',
+      source: 'Test',
+    });
+
+    expect(res.status).toBe(400);
+    expect(res.body.errors).toBeDefined();
+    expect(res.body.errors[0].msg).toBe('Invalid URL format');
+  });
+
   it('PUT /feeds/:id - should update an existing feed', async () => {
     if (!createdFeed) throw new Error('No feed created to update.');
 
@@ -54,6 +76,16 @@ describe('Feed API Endpoints', () => {
     expect(res.body.title).toBe(updatedData.title);
   });
 
+  it('PUT /feeds/:id - should fail with invalid id', async () => {
+    const res = await request(app).put('/feeds/invalid-id').send({
+      title: 'Test Update',
+    });
+
+    expect(res.status).toBe(400);
+    expect(res.body.errors).toBeDefined();
+    expect(res.body.errors[0].msg).toBe('Invalid Feed ID format');
+  });
+
   it('DELETE /feeds/:id - should delete a feed', async () => {
     if (!createdFeed) throw new Error('No feed created to delete.');
 
@@ -64,5 +96,13 @@ describe('Feed API Endpoints', () => {
     // Verify feed is removed
     const checkRes = await request(app).get(`/feeds/${createdFeed._id}`);
     expect(checkRes.status).toBe(404);
+  });
+
+  it('DELETE /feeds/:id - should fail with invalid id', async () => {
+    const res = await request(app).delete('/feeds/invalid-id');
+
+    expect(res.status).toBe(400);
+    expect(res.body.errors).toBeDefined();
+    expect(res.body.errors[0].msg).toBe('Invalid Feed ID format');
   });
 });
