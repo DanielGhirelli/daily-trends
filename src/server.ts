@@ -3,6 +3,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import feedRoutes from './routes/feedRoutes';
 import { connectDB } from './config/db';
+import { errorHandler } from './middleware/errorHandler';
 
 dotenv.config(); // Load .env variables before anything else
 
@@ -14,6 +15,9 @@ app.use(express.json());
 
 // Routes
 app.use('/feeds', feedRoutes);
+
+// Error handling middleware (must be after routes)
+app.use(errorHandler);
 
 // Start server after connecting to database
 connectDB().then(() => {
